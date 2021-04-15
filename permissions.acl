@@ -1,0 +1,182 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Sample access control list.
+ */
+rule EverybodyCanReadEverything {
+    description: "Allow all participants read access to all resources"
+    participant: "org.example.mynetwork.employee"
+    operation: READ
+    resource: "org.example.mynetwork.*"
+    action: ALLOW
+}
+
+rule employeeCannotCreateParticipants {
+    description: "Employees can't create employees"
+    participant: "org.example.mynetwork.employee"
+    operation: CREATE
+    resource: "org.example.mynetwork.employee"
+    action: DENY
+}
+
+rule employeeCanPurchase {
+    description: "Allow employee to purchase product"
+    participant: "org.example.mynetwork.employee"
+    operation: CREATE
+    resource: "org.example.mynetwork.purchase"
+    action: ALLOW
+}
+
+rule employeeCanCreateChallenge {
+    description: "Allow employee to create challenge"
+    participant: "org.example.mynetwork.employee"
+    operation: CREATE
+    resource: "org.example.mynetwork.createChallenge"
+    action: ALLOW
+}
+
+rule employeeCanConfirmChallenge {
+    description: "Allow employee to confirm challenge"
+    participant: "org.example.mynetwork.employee"
+    operation: CREATE
+    resource: "org.example.mynetwork.confirm"
+    action: ALLOW
+}
+
+rule employeeCanDenyChallenge {
+    description: "Allow employee to deny challenge"
+    participant: "org.example.mynetwork.employee"
+    operation: CREATE
+    resource: "org.example.mynetwork.deny"
+    action: ALLOW
+}
+
+
+
+
+
+
+rule employeeCanUpdateParticipants {
+    description: "Allow all participants read access to all resources"
+    participant: "org.example.mynetwork.employee"
+    operation: UPDATE
+    resource: "org.example.mynetwork.employee"
+    action: ALLOW
+}
+
+rule employeeCanCreateRewardCoins {
+    description: "Allow all participants read access to all resources"
+    participant: "org.example.mynetwork.employee"
+    operation: CREATE
+    resource: "org.example.mynetwork.rewardCoin"
+    action: ALLOW
+}
+
+rule employeeCanUpdateRewardCoins {
+    description: "Allow all participants to Reward Coin"
+    participant: "org.example.mynetwork.employee"
+    operation: UPDATE
+    resource: "org.example.mynetwork.rewardCoin"
+    action: ALLOW
+}
+rule employeeCanCreateApproval {
+    description: "Allow participant to approve coin"
+    participant: "org.example.mynetwork.employee"
+    operation: CREATE
+    resource: "org.example.mynetwork.approve"
+    action: ALLOW
+}
+
+rule employeeCreateParticipants {
+    description: "Allow all participants read access to all resources"
+    participant: "org.example.mynetwork.networkAdmin"
+    operation: CREATE
+    resource: "org.example.mynetwork.*"
+    action: ALLOW
+}
+
+rule adminCreateNetworkAdmin {
+    description: "Allow all participants read access to all resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: CREATE
+    resource: "org.example.mynetwork.networkAdmin"
+    action: ALLOW
+}
+rule EverybodyCanSubmitTransactions {
+    description: "Allow all participants to submit transactions"
+    participant: "org.example.mynetwork.employee"
+    operation: CREATE
+    resource: "org.example.mynetwork.tradeCoin"
+    action: ALLOW
+}
+
+rule OwnerHasFullAccessToTheirAssets {
+    description: "Allow all participants full access to their assets"
+    participant(p): "org.example.mynetwork.employee"
+    operation: ALL
+    resource(r): "org.example.mynetwork.rewardCoin"
+    condition: (r.owner.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+}
+
+rule SystemACL {
+  description:  "System ACL to permit all access"
+  participant: "org.hyperledger.composer.system.Participant"
+  operation: ALL
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW
+}
+
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.example.mynetwork.networkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminUserSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.example.mynetwork.networkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+rule NetworkAdmin {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+rule NetworkADminCanIssueIdentity {
+    description: "Grant network admin to issue identity"
+    participant: "org.example.mynetwork.networkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.IssueIdentity"
+    action: ALLOW
+  
+}
+  

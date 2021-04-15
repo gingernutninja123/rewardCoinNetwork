@@ -1,0 +1,220 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Write your model definitions here
+ */
+
+namespace org.example.mynetwork
+
+abstract participant person identified by employeeId{
+  o String employeeId
+  o String email
+}
+
+
+participant networkAdmin extends person{
+  o String firstName
+  o String lastName
+}
+
+participant employee extends person {
+  o String firstName
+  o String lastName
+  o String employer
+  --> product [] products optional
+  o Integer coinCount default=0
+  --> team team
+  --> company company
+}
+
+participant vendor extends person {
+  o String vendorName
+  o String address
+  
+}
+
+abstract participant organisation identified by orgID {
+  o String orgID
+  o String orgName
+}
+
+participant company extends organisation {
+  o String address
+  o String email
+}
+
+participant division extends organisation {
+  --> company company
+  o String address
+  o String email
+}
+
+participant team extends organisation {
+  --> organisation organisation
+  --> employee manager
+  o String teamCode
+
+}
+
+asset product identified by productID {
+  o String productID
+  o String productName
+  o String description
+  --> vendor vendor
+  o Integer price
+}
+
+
+asset rewardCoin identified by coinID{
+  o String coinID
+  o String type optional
+  o String description optional
+  --> person recipent optional
+  --> person sponsor optional
+  --> person owner
+  o coinStatus status
+  o Integer approvalCount optional
+  -->employee[] approvals optional
+}
+
+
+asset challenge identified by challengeID{
+  o String challengeID
+  o String challengeName
+  o String description
+  o Integer reward
+  --> rewardCoin [] rewardCoins
+  --> person recipent
+  --> person sponsor
+  o challengeStatus status default='INPROGRESS'
+
+}
+
+asset pot identified by potID{
+  o String potID
+  o String potName
+  o String description
+  o Integer goal
+  --> employee author
+  --> employee [] backers optional
+  --> rewardCoin [] rewardCoins optional
+  o potStatus status
+
+}
+
+
+transaction approve{
+  --> employee approver
+  --> rewardCoin coin
+}
+
+
+transaction autoApprove{
+  --> employee approver
+  --> rewardCoin coin
+}
+
+transaction purchase{
+  --> employee employee
+  --> product product
+}
+
+transaction tradeCoin {
+  --> rewardCoin asset
+  --> employee newOwner
+  
+  
+}
+
+@commit(false)
+@returns(rewardCoin[])
+transaction getRewardCoinWithID {
+  o String teamID
+}
+
+@commit(false)
+@returns(rewardCoin[])
+transaction getTeam {
+  o String divisionID
+}
+
+@commit(false)
+@returns(rewardCoin[])
+transaction getCompany{
+  o String companyID
+}
+
+@commit(false)
+@returns(product[])
+transaction getProducts{
+  o String [] productIDs
+}
+
+@commit(false)
+@returns(pot[])
+transaction getPots{
+  o String companyID
+}
+
+
+transaction addCoin{
+  o rewardCoin coin
+  --> employee owner
+}
+
+
+transaction createChallenge {
+  o challenge challenge
+  }
+
+transaction confirmChallenge {
+  --> challenge challenge
+  --> employee confirmer
+}
+
+transaction denyChallenge {
+  --> challenge challenge
+  --> employee confirmer
+}
+
+
+
+transaction contribute {
+  --> pot pot
+  --> rewardCoin [] rewardCoins
+  --> employee backer
+}
+
+enum potStatus{
+  o PENDING
+  o GOAL_REACHED
+}
+
+enum coinStatus{
+  o PENDING_APPROVAL
+  o DELIVERED
+  o GIFTED
+  o PENDING_CHALLENGE
+  o CHALLENGE_COMPLETED
+  o PENDING_POT
+  o POT_COMPLETED
+}
+
+
+enum challengeStatus{
+  o COMPLETED
+  o FAILED
+  o INPROGRESS
+}

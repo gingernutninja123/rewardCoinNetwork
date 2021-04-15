@@ -1,0 +1,85 @@
+query Q1 {
+    description: "SELECT REWARD COINS WITH A CERTAIN OWNER"
+    statement:
+        SELECT org.example.mynetwork.rewardCoin
+            WHERE (_$paramOwner==owner)
+}
+
+query Q2 {
+  description:"SELECT TEAM WITH TEAMCODE"
+  statement:
+    SELECT org.example.mynetwork.team 
+    WHERE(_$paramTeamCode==teamCode)
+}
+
+query Q3 {
+  description:"SELECT EMPLOYEE FROM TEAM ID"
+  statement:
+    SELECT org.example.mynetwork.employee
+    WHERE(_$paramTeamID==team)
+
+}
+
+query Q4 {
+  description:"SELECT REWARD COIN FROM EMPLOYEE ID"
+  statement:
+    SELECT org.example.mynetwork.rewardCoin
+    WHERE(_$paramTeamID==owner OR _$paramTeamID==recipent)
+
+}
+
+query Q5{
+  description:"SELECT EMPLOYEES BY COMPANY"
+    statement:
+    SELECT org.example.mynetwork.employee
+    WHERE (_$paramTeamID==company)
+}
+
+query Q6{
+  description:"SELECT TEAMS WITH DIVISION ID"
+  statement:
+    SELECT org.example.mynetwork.team
+    WHERE (_$paramDivisionID==organisation)
+}
+
+query Q7{
+  description:"SELECT EMPLOYEE WITH COMPANY"
+  statement:
+    SELECT org.example.mynetwork.employee
+    WHERE (_$paramCompanyID==company)
+}
+
+query Q8{
+  description:"SELECT PURCHASE WITH SPECIFIC ID"
+  statement:
+  SELECT org.example.mynetwork.purchase
+  WHERE (_$paramEmployeeID==employee)
+}
+
+query Q9{
+  description:"SELECT PRODUCT WITH VENDOR ID"
+  statement:
+  SELECT org.example.mynetwork.product
+  WHERE (_$paramVendorID==vendor)
+}
+
+query Q10{
+  description:"SELECT CHALLENGE WITH CERTAIN RECIPENT"
+  statement:
+  SELECT org.example.mynetwork.challenge 
+  WHERE (_$paramID==recipent)
+}
+
+query Q11{
+  description:"SELECT CHALLENGE WITH CERTAIN SPONSOR"
+  statement:
+  SELECT org.example.mynetwork.challenge 
+  WHERE (_$paramID==sponsor)
+}
+
+query Q12{
+  description:"SELECT pot from author"
+  statement:
+  SELECT org.example.mynetwork.pot
+  WHERE (_$paramID==author)
+}
